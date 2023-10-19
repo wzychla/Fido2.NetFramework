@@ -1,0 +1,86 @@
+﻿@model Fido2.NetFramework.Demo.Models.Account.LogonModel
+
+@{
+    ViewBag.Title = "Logon";
+}
+
+<h2>Login</h2>
+
+@using ( var form = Html.BeginForm( null, null ) )
+{
+    <div>
+        Login:
+        @Html.TextBoxFor( m => m.UserName )
+        @Html.ValidationMessageFor( m => m.UserName )
+    </div>
+    <div>
+        Password:
+        @Html.PasswordFor( m => m.Password )
+        @Html.ValidationMessageFor( m => m.Password )
+    </div>
+    <div>
+        <button>Login</button>
+    </div>
+}
+
+<hr />
+<button id="btAssertion">Login using passkeys</button>
+
+@if ( this.ViewBag.Message != null )
+{
+    <div style="margin: 5px; padding: 20px; background-color: darkred; color: white">
+        @this.ViewBag.Message
+    </div>
+}
+
+<hr />
+To login, create an account first: <a href="/Account/Create">create account</a>
+
+<style>
+    #btAssertion {
+        background: url(/Resources/passkeys.png) no-repeat center left;
+        background-size: 16px;
+        height: 32px;
+        width: 250px;
+    }
+</style>
+
+<script>
+    window.addEventListener('load', function () {
+
+        var btAssertion = document.getElementById('btAssertion');
+        btAssertion.addEventListener('click', async function () {
+
+            try {
+                var assertionRaw = await fetch('/api/assertion/options', { method: 'POST' });
+                var assertionChallenge = await assertionRaw.json();
+
+                assertionChallenge = preformatGetAssertReq(assertionChallenge);
+
+                console.log(assertionChallenge);
+
+                var credentialInfo = await navigator.credentials.get({ 'publicKey': assertionChallenge });
+                credentialInfo = publicKeyCredentialToJSON(credentialInfo);
+
+                console.log(credentialInfo);
+
+                var resultRaw = await fetch('/api/assertion/result', {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(credentialInfo)
+                });
+                var result = await resultRaw.json();
+                if (result.status == 'ok') {
+                    document.location.href = '/';
+                }
+            }
+            catch (e) {
+                addLocalMessage(e.toString());
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,32 @@
+﻿@model Fido2.NetFramework.Demo.Models.Account.CreateModel
+
+@{
+    ViewBag.Title = "Tworzenie konta";
+}
+
+<h2>Create account</h2>
+
+@using ( var form = Html.BeginForm( null, null ) )
+{
+    <div>
+        Login:
+        @Html.TextBoxFor( m => m.UserName )
+        @Html.ValidationMessageFor( m => m.UserName )
+    </div>
+    <div>
+        Password:
+        @Html.PasswordFor( m => m.Password )
+        @Html.ValidationMessageFor( m => m.Password )
+    </div>
+    <div>
+        <button>Create</button>
+    </div>
+}
+
+@if (this.ViewBag.Message != null )
+{
+    <div>@this.ViewBag.Message</div>
+}
+
+<hr/>
+<a href="/">Return to main page</a>

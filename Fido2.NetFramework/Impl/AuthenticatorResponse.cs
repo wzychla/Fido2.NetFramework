@@ -1,0 +1,98 @@
+﻿using System;
+using System.Linq;
+using Newtonsoft.Json;
+
+using Fido2NetLib.Exceptions;
+using Fido2NetLib.Serialization;
+using System.Text;
+using System.Collections.Generic;
+
+namespace Fido2NetLib
+{
+
+    /// <summary>
+    /// Base class for responses sent by the Authenticator Client
+    /// </summary>
+    public class AuthenticatorResponse
+    {
+        [JsonConstructor]
+        public AuthenticatorResponse( string type, byte[] challenge, string origin ) // for deserialization
+        {
+            Type = type;
+            Challenge = challenge;
+            Origin = origin;
+        }
+
+        protected AuthenticatorResponse( ReadOnlySpan<byte> utf8EncodedJson )
+        {
+            if ( utf8EncodedJson.Length is 0 )
+                throw new Fido2VerificationException( Fido2ErrorCode.InvalidAuthenticatorResponse, "utf8EncodedJson may not be empty" );
+
+            // 1. Let JSONtext be the result of running UTF-8 decode on the value of response.clientDataJSON
+
+            // 2. Let C, the client data claimed as collected during the credential creation, be the result of running an implementation-specific JSON parser on JSONtext
+            // Note: C may be any implementation-specific data structure representation, as long as C’s components are referenceable, as required by this algorithm.
+            // We call this AuthenticatorResponse
+            AuthenticatorResponse response;
+            try
+            {
+                response = JsonConvert.DeserializeObject<AuthenticatorResponse>( Encoding.UTF8.GetString( utf8EncodedJson.ToArray() ), FidoSerializerContext.Default.AuthenticatorResponse );
+            }
+            catch ( Exception e ) when ( e is JsonException )
+            {
+                throw new Fido2VerificationException( Fido2ErrorCode.MalformedAuthenticatorResponse, "Malformed clientDataJson" );
+            }
+
+            if ( response is null )
+                throw new Fido2VerificationException( Fido2ErrorCode.InvalidAuthenticatorResponse, "Deserialized authenticator response cannot be null" );
+
+            Type = response.Type;
+            Challenge = response.Challenge;
+            Origin = response.Origin;
+        }
+
+        public const int MAX_ORIGINS_TO_PRINT = 5;
+
+        [JsonProperty( "type" )]
+        public string Type { get; }
+
+        [JsonConverter( typeof( Base64UrlConverter ) )]
+        [JsonProperty( "challenge" )]
+        public byte[] Challenge { get; }
+
+        [JsonProperty( "origin" )]
+        public string Origin { get; }
+
+        protected void BaseVerify( HashSet<string> fullyQualifiedExpectedOrigins, ReadOnlySpan<byte> originalChallenge )
+        {
+            if ( !string.Equals( Type, "webauthn.create", StringComparison.InvariantCultureIgnoreCase ) && 
+                 !string.Equals( Type, "webauthn.get", StringComparison.InvariantCultureIgnoreCase ) )
+                throw new Fido2VerificationException( Fido2ErrorCode.InvalidAuthenticatorResponse, $"Type must be 'webauthn.create' or 'webauthn.get'. Was '{Type}'" );
+
+            if ( Challenge is null )
+                throw new Fido2VerificationException( Fido2ErrorCode.MissingAuthenticatorResponseChallenge, Fido2ErrorMessages.MissingAuthenticatorResponseChallenge );
+
+            // 11. Verify that the value of C.challenge matches the challenge that was sent to the authenticator in the create() call
+            if ( !Challenge.AsSpan().SequenceEqual( originalChallenge ) )
+                throw new Fido2VerificationException( Fido2ErrorCode.InvalidAuthenticatorResponseChallenge, Fido2ErrorMessages.InvalidAuthenticatorResponseChallenge );
+
+            var fullyQualifiedOrigin = Origin.ToFullyQualifiedOrigin();
+
+            // 12. Verify that the value of C.origin matches the Relying Party's origin.
+            if ( !fullyQualifiedExpectedOrigins.Contains( fullyQualifiedOrigin ) )
+                throw new Fido2VerificationException( $"Fully qualified origin {fullyQualifiedOrigin} of {Origin} not equal to fully qualified original origin {string.Join( ", ", fullyQualifiedExpectedOrigins.Take( MAX_ORIGINS_TO_PRINT ) )} ({fullyQualifiedExpectedOrigins.Count})" );
+        }
+
+        /*
+        private static string FullyQualifiedOrigin(string origin)
+        {
+            var uri = new Uri(origin);
+
+            if (UriHostNameType.Unknown != uri.HostNameType)
+                return uri.IsDefaultPort ? $"{uri.Scheme}://{uri.Host}" : $"{uri.Scheme}://{uri.Host}:{uri.Port}";
+
+            return origin;
+        }
+        */
+    }
+}

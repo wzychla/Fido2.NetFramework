@@ -1,0 +1,79 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Fido2NetLib.Serialization;
+using Newtonsoft.Json;
+
+namespace Fido2NetLib
+{
+
+    public sealed class FileSystemMetadataRepository : IMetadataRepository
+    {
+        private readonly string _path;
+        private readonly IDictionary<Guid, MetadataBLOBPayloadEntry> _entries;
+        private MetadataBLOBPayload _blob;
+
+        public FileSystemMetadataRepository( string path )
+        {
+            _path = path;
+            _entries = new Dictionary<Guid, MetadataBLOBPayloadEntry>();
+        }
+
+        public async Task<MetadataStatement> GetMetadataStatementAsync( MetadataBLOBPayload blob, MetadataBLOBPayloadEntry entry, CancellationToken cancellationToken = default )
+        {
+            if ( _blob is null )
+                await GetBLOBAsync( cancellationToken );
+
+            if ( entry.AaGuid is Guid aaGuid && _entries.TryGetValue( aaGuid, out var found ) )
+            {
+                return found.MetadataStatement;
+            }
+
+            return null;
+        }
+
+        public async Task<MetadataBLOBPayload> GetBLOBAsync( CancellationToken cancellationToken = default )
+        {
+            if ( Directory.Exists( _path ) )
+            {
+                foreach ( var filename in Directory.GetFiles( _path ) )
+                {
+                    using ( var fileStream = new FileStream( filename, FileMode.Open, FileAccess.Read ) )
+                    using ( var streamReader = new StreamReader( fileStream ) )
+                    {
+                        MetadataStatement statement = JsonConvert.DeserializeObject<MetadataStatement>(streamReader.ReadToEnd(), FidoModelSerializerContext.Default.MetadataStatement) ?? throw new NullReferenceException(nameof(statement));
+                        var conformanceEntry = new MetadataBLOBPayloadEntry
+                        {
+                            AaGuid = statement.AaGuid,
+                            MetadataStatement = statement,
+                            StatusReports = new StatusReport[]
+                            {
+                                new StatusReport
+                                {
+                                    Status = AuthenticatorStatus.NOT_FIDO_CERTIFIED
+                                }
+                            }
+                        };
+                        if ( null != conformanceEntry.AaGuid )
+                            _entries.Add( conformanceEntry.AaGuid.Value, conformanceEntry );
+                    }
+                }
+            }
+
+            _blob = new MetadataBLOBPayload()
+            {
+                Entries = _entries.Select( o => o.Value ).ToArray(),
+                NextUpdate = "", //Empty means it won't get cached
+                LegalHeader = "Local FAKE",
+                Number = 1
+            };
+
+            return _blob;
+        }
+    }
+}

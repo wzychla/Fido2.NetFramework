@@ -1,0 +1,115 @@
+﻿@model Fido2.NetFramework.Demo.Models.Home.IndexModel
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>Main page</h2>
+
+<div>
+    This app is a demo of the <a href="https://passkeys.dev/docs/intro/what-are-passkeys/">passkeys</a> authentication mechanism.
+    Guideline:
+    <ol>
+        <li>Create an account (this uses Entity Framework in the background)</li>
+        <li>Login to your account using username/password</li>
+        <li>Register your passkeys profile</li>
+        <li>Logout</li>
+        <li>Login again, this time using a passkey</li>
+
+    </ol> 
+</div>
+@if (!this.User.Identity.IsAuthenticated)
+{
+    <div>You are not logged in yet.. <a href="/Account/Logon">Log in</a> or <a href="/Account/Create">create an account</a></div>
+}
+else
+{
+    <div>
+        You are logged as  <b>@this.User.Identity.Name</b>
+    </div>
+    <div>
+        The number of your <b>passkeys</b> in the database: @Model.StoredCredentialsCount
+        @if ( Model.StoredCredentialsCount == 0 )
+        {
+            <div>In order to login using a <b>passkey</b>, create at least one</div>
+        }
+    </div>
+    <div>
+        Stored passkeys are visible in following places
+        <ul>
+            <li>iOS - system settings, security tab, <b>keychain</b></li>
+            <li>Android - account settings, security tab, <b>stored accounts</b></li>
+        </ul>
+    </div>
+    <div>
+        <a id="btAttestation" href="#">Register passkeys profile</a>
+    </div>
+    <div>
+        <a href="/Account/Logoff">Logoff</a>
+    </div>
+}
+<script>
+
+    window.addEventListener('load', function () {
+
+        var btAttestation = document.getElementById('btAttestation');
+        btAttestation.addEventListener('click', async function () {
+
+            try {
+                var credentialRaw = await fetch('/api/attestation/options', { method: 'POST' });
+                var credentialChallenge = await credentialRaw.json();
+
+                credentialChallenge = preformatMakeCredReq(credentialChallenge);
+
+                var credentialInfo = await navigator.credentials.create({ 'publicKey': credentialChallenge });
+
+                /*
+                var response = credentialInfo.response;
+                var authenticatorData = response.getAuthenticatorData();
+                var pk = response.getPublicKey();
+                var pkAlgo = response.getPublicKeyAlgorithm();
+                var transports = response.getTransports();
+
+                console.log(authenticatorData, pk, pkAlgo, transports);
+                */
+
+                credentialInfo = publicKeyCredentialToJSON(credentialInfo);
+                console.log(credentialInfo);
+
+                var resultRaw = await fetch('/api/attestation/result', {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(credentialInfo)
+                });
+
+                var result = await resultRaw.json();
+
+                addLocalMessage('Komunikat diagnostyczny: ' + JSON.stringify(result));
+            }
+            catch (e) {
+                addLocalMessage(e.toString());
+            }
+        });
+
+    });
+
+</script>
+
+<style>
+
+    #btAttestation {
+        background: url(/Resources/passkeys.png) no-repeat center left;
+        background-size: 16px;
+        height: 32px;
+        line-height: 32px;
+        width: 250px;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        color: black;
+        border: 1px solid black;
+    }
+
+</style>
