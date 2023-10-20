@@ -8,7 +8,7 @@ using System.Text;
 namespace Fido2NetLib
 {
 
-    internal static class DataHelper
+    public static class DataHelper
     {
         // https://stackoverflow.com/questions/1500194/c-looping-through-lines-of-multiline-string
         public static IEnumerable<string> EnumerateLines( this string s )

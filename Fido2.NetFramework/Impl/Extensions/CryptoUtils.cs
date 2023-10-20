@@ -10,7 +10,7 @@ using Fido2NetLib.Objects;
 namespace Fido2NetLib
 {
 
-    internal static class CryptoUtils
+    public static class CryptoUtils
     {
         public static byte[] HashData256( ReadOnlySpan<byte> data )
         {

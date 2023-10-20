@@ -3,7 +3,7 @@
 namespace Fido2NetLib.Cbor
 {
 
-    internal sealed class CborInteger : CborObject
+    public sealed class CborInteger : CborObject
     {
         public CborInteger( long value )
         {

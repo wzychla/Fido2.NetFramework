@@ -34,14 +34,64 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.2.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.5.1.1\lib\net462\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.3.1.1\lib\net462\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.3.1.1\lib\net462\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Moq, Version=4.20.69.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.20.69\lib\net462\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Formats.Asn1, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Formats.Asn1.7.0.0\lib\net462\System.Formats.Asn1.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Formats.Cbor, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Formats.Cbor.7.0.0\lib\net462\System.Formats.Cbor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.7.0.0\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,12 +100,76 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asn1Tests.cs" />
+    <Compile Include="AttestationTypeTests.cs" />
+    <Compile Include="Attestation\AndroidKey.cs" />
+    <Compile Include="Attestation\AndroidSafetyNet.cs" />
+    <Compile Include="Attestation\Apple.cs" />
+    <Compile Include="Attestation\AppleAppAttest.cs" />
+    <Compile Include="Attestation\DevicePublicKey.cs" />
+    <Compile Include="Attestation\FidoU2f.cs" />
+    <Compile Include="Attestation\None.cs" />
+    <Compile Include="Attestation\Packed.cs" />
+    <Compile Include="Attestation\Tpm.cs" />
+    <Compile Include="AuthenticatorDataTests.cs" />
+    <Compile Include="AuthenticatorResponse.cs" />
+    <Compile Include="Base64UrlTest.cs" />
     <Compile Include="BasicTests.cs" />
+    <Compile Include="CborTests.cs" />
+    <Compile Include="Converters\FidoEnumConverterTests.cs" />
+    <Compile Include="CredentialPublicKeyTests.cs" />
+    <Compile Include="CryptoUtilsTests.cs" />
+    <Compile Include="EnumExtensionTest.cs" />
+    <Compile Include="ExistingU2fRegistrationDataTests.cs" />
+    <Compile Include="Extensions\AsnHelper.cs" />
+    <Compile Include="Extensions\CertInfoHelper.cs" />
+    <Compile Include="Extensions\Record.cs" />
+    <Compile Include="Extensions\PubAreaHelper.cs" />
+    <Compile Include="Extensions\SerializationHelper.cs" />
+    <Compile Include="Extensions\SignatureHelper.cs" />
+    <Compile Include="Extensions\TpmAlgExtensions.cs" />
+    <Compile Include="Extensions\TpmSanEncoder.cs" />
+    <Compile Include="Fido2Tests.cs" />
+    <Compile Include="MetadataServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PubKeyCredParamTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="TestFiles\assertionNoneOptions.json" />
+    <None Include="TestFiles\assertionNoneResponse.json" />
+    <None Include="TestFiles\attestationAndroidKeyOptions.json" />
+    <None Include="TestFiles\attestationAndroidKeyResponse.json" />
+    <None Include="TestFiles\attestationAppleOptions.json" />
+    <None Include="TestFiles\attestationAppleResponse.json" />
+    <None Include="TestFiles\attestationNoneOptions.json" />
+    <None Include="TestFiles\attestationNoneResponse.json" />
+    <None Include="TestFiles\attestationOptionsATKey.json" />
+    <None Include="TestFiles\attestationOptionsNone.json" />
+    <None Include="TestFiles\attestationOptionsPacked.json" />
+    <None Include="TestFiles\attestationOptionsPacked512.json" />
+    <None Include="TestFiles\attestationOptionsTrustKeyT110.json" />
+    <None Include="TestFiles\attestationOptionsU2F.json" />
+    <None Include="TestFiles\attestationResultsATKey.json" />
+    <None Include="TestFiles\attestationResultsNone.json" />
+    <None Include="TestFiles\attestationResultsPacked.json" />
+    <None Include="TestFiles\attestationResultsPacked512.json" />
+    <None Include="TestFiles\attestationResultsU2F.json" />
+    <None Include="TestFiles\attestationResultTrustKeyT110.json" />
+    <None Include="TestFiles\attestationTPMSHA1Options.json" />
+    <None Include="TestFiles\attestationTPMSHA1Response.json" />
+    <None Include="TestFiles\attestationTPMSHA256Options.json" />
+    <None Include="TestFiles\attestationTPMSHA256Response.json" />
+    <None Include="TestFiles\json1.json" />
+    <None Include="TestFiles\json2.json" />
+    <None Include="TestFiles\mdsCA.cer" />
+    <None Include="TestFiles\mdsCA.crl" />
+    <None Include="TestFiles\mdsRoot.cer" />
+    <None Include="TestFiles\mdsRoot.crl" />
+    <None Include="TestFiles\mdsSigning.cer" />
+    <None Include="TestFiles\options1.json" />
+    <None Include="TestFiles\options2.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fido2.NetFramework\Fido2.NetFramework.csproj">

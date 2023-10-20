@@ -6,7 +6,7 @@ using System.Numerics;
 namespace Fido2NetLib
 {
 
-    internal readonly struct Asn1Element
+    public readonly struct Asn1Element
     {
         private readonly Asn1Tag _tag;
         private readonly ReadOnlyMemory<byte> _encodedValue;

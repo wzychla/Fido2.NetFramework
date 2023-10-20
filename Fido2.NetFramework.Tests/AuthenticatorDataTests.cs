@@ -1,0 +1,36 @@
+﻿using Fido2NetLib;
+using Fido2NetLib.Exceptions;
+using Fido2NetLib.Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+
+namespace Test
+{
+    [TestClass]
+    public class AuthenticatorDataTests
+    {
+        [TestMethod]
+        public void AuthenticatorDataNull()
+        {
+            byte[] ad = null;
+            var ex = Assert.ThrowsException<Fido2VerificationException>(() => AuthenticatorData.Parse(ad));
+            Assert.AreEqual( Fido2ErrorMessages.MissingAuthenticatorData, ex.Message );
+        }
+
+        [TestMethod]
+        public void AuthenticatorDataMinLen()
+        {
+            byte[] ad = new byte[36];
+            var ex = Assert.ThrowsException<Fido2VerificationException>(() => AuthenticatorData.Parse(ad));
+            Assert.AreEqual( "Authenticator data is less than the minimum structure length of 37", ex.Message );
+        }
+
+        [TestMethod]
+        public void AuthenticatorDataExtraBytes()
+        {
+            byte[] ad = "49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97634100000000000000000000000000000000000000000040ee726cb6daf874b4ac9ab5a76870777aca49d2e6bdaec276c2cfbddc115c34e3fae20fecff8c0b143be496b358720d0108de9d7548c92f10df0d206b78a40b03a501020326200121582050e028e71aac2683df256b14e7487b7364bbfe594fd0ac0623abc99048f5378f225820364cc49e05f849f381f23104208c9bc1880e899c7034721c52966b99793f578242".FromHexString();
+            var ex = Assert.ThrowsException<Fido2VerificationException>(() => AuthenticatorData.Parse(ad));
+            Assert.AreEqual( "Leftover bytes decoding AuthenticatorData", ex.Message );
+        }
+    }
+}

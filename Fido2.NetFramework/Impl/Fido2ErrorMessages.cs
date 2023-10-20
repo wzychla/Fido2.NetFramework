@@ -3,7 +3,7 @@
 namespace Fido2NetLib.Exceptions
 {
 
-    internal static class Fido2ErrorMessages
+    public static class Fido2ErrorMessages
     {
         public static readonly string AssertionResponseTypeNotWebAuthnGet    = "AssertionResponse type must be 'webauthn.get'";
         public static readonly string AssertionResponseNotPublicKey          = "AssertionResponse type must be 'public-key'";

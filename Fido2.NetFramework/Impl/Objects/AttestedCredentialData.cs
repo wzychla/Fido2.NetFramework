@@ -72,7 +72,7 @@ namespace Fido2NetLib.Objects
             writer.AddRange( AaGuid.ToByteArray() );
 
             // Write the length of credential ID, as big endian bytes of a 16-bit unsigned integer
-            writer.AddRange( BitConverter.GetBytes( (ushort)CredentialId.Length ) );
+            writer.AddRange( BitConverter.GetBytes( (ushort)CredentialId.Length ).Reverse() );
 
             // Write CredentialId bytes
             writer.AddRange( CredentialId );
