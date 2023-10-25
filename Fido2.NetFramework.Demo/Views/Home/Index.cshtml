@@ -42,6 +42,9 @@ else
     </div>
     <div>
         <a id="btAttestation" href="#">Register passkeys profile</a>
+        <div id="btNoAttestation" style="display: none">
+            Passkeys are not available on this platform
+        </div>
     </div>
     <div>
         <a href="/Account/Logoff">Logoff</a>
@@ -51,48 +54,55 @@ else
 
     window.addEventListener('load', function () {
 
-        var btAttestation = document.getElementById('btAttestation');
-        btAttestation.addEventListener('click', async function () {
+        if (!window.PublicKeyCredential) {
 
-            try {
-                var credentialRaw = await fetch('/api/attestation/options', { method: 'POST' });
-                var credentialChallenge = await credentialRaw.json();
+            document.getElementById('btAttestation').style.display = 'none';
+            document.getElementById('btNoAttestation').style.display = 'initial';
 
-                credentialChallenge = preformatMakeCredReq(credentialChallenge);
+        } else {
 
-                var credentialInfo = await navigator.credentials.create({ 'publicKey': credentialChallenge });
+            var btAttestation = document.getElementById('btAttestation');
+            btAttestation.addEventListener('click', async function () {
 
-                /*
-                var response = credentialInfo.response;
-                var authenticatorData = response.getAuthenticatorData();
-                var pk = response.getPublicKey();
-                var pkAlgo = response.getPublicKeyAlgorithm();
-                var transports = response.getTransports();
+                try {
+                    var credentialRaw = await fetch('/api/attestation/options', { method: 'POST' });
+                    var credentialChallenge = await credentialRaw.json();
 
-                console.log(authenticatorData, pk, pkAlgo, transports);
-                */
+                    credentialChallenge = preformatMakeCredReq(credentialChallenge);
 
-                credentialInfo = publicKeyCredentialToJSON(credentialInfo);
-                console.log(credentialInfo);
+                    var credentialInfo = await navigator.credentials.create({ 'publicKey': credentialChallenge });
 
-                var resultRaw = await fetch('/api/attestation/result', {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(credentialInfo)
-                });
+                    /*
+                    var response = credentialInfo.response;
+                    var authenticatorData = response.getAuthenticatorData();
+                    var pk = response.getPublicKey();
+                    var pkAlgo = response.getPublicKeyAlgorithm();
+                    var transports = response.getTransports();
+    
+                    console.log(authenticatorData, pk, pkAlgo, transports);
+                    */
 
-                var result = await resultRaw.json();
+                    credentialInfo = publicKeyCredentialToJSON(credentialInfo);
+                    console.log(credentialInfo);
 
-                addLocalMessage('Komunikat diagnostyczny: ' + JSON.stringify(result));
-            }
-            catch (e) {
-                addLocalMessage(e.toString());
-            }
-        });
+                    var resultRaw = await fetch('/api/attestation/result', {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        method: 'POST',
+                        body: JSON.stringify(credentialInfo)
+                    });
 
+                    var result = await resultRaw.json();
+
+                    addLocalMessage('Komunikat diagnostyczny: ' + JSON.stringify(result));
+                }
+                catch (e) {
+                    addLocalMessage(e.toString());
+                }
+            });
+        }
     });
 
 </script>

@@ -24,14 +24,21 @@
 }
 
 <hr />
-<button id="btAssertion">Login using passkeys</button>
-
-@if ( this.ViewBag.Message != null )
-{
-    <div style="margin: 5px; padding: 20px; background-color: darkred; color: white">
-        @this.ViewBag.Message
+<div>
+    <div id="passKeysAvailable">
+        <button id="btAssertion">Login using passkeys</button>        
     </div>
-}
+    <div id="passKeysNotAvailable" style="display: none">
+        Passkeys are not available on this platform
+    </div>
+
+    @if ( this.ViewBag.Message != null )
+    {
+        <div style="margin: 5px; padding: 20px; background-color: darkred; color: white">
+            @this.ViewBag.Message
+        </div>
+    }
+</div>
 
 <hr />
 To login, create an account first: <a href="/Account/Create">create account</a>
@@ -48,39 +55,46 @@ To login, create an account first: <a href="/Account/Create">create account</a>
 <script>
     window.addEventListener('load', function () {
 
-        var btAssertion = document.getElementById('btAssertion');
-        btAssertion.addEventListener('click', async function () {
+        if (!window.PublicKeyCredential) {
 
-            try {
-                var assertionRaw = await fetch('/api/assertion/options', { method: 'POST' });
-                var assertionChallenge = await assertionRaw.json();
+            document.getElementById('passKeysAvailable').style.display = 'none';
+            document.getElementById('passKeysNotAvailable').style.display = 'initial';
 
-                assertionChallenge = preformatGetAssertReq(assertionChallenge);
+        } else {
 
-                console.log(assertionChallenge);
+            var btAssertion = document.getElementById('btAssertion');
+            btAssertion.addEventListener('click', async function () {
 
-                var credentialInfo = await navigator.credentials.get({ 'publicKey': assertionChallenge });
-                credentialInfo = publicKeyCredentialToJSON(credentialInfo);
+                try {
+                    var assertionRaw = await fetch('/api/assertion/options', { method: 'POST' });
+                    var assertionChallenge = await assertionRaw.json();
 
-                console.log(credentialInfo);
+                    assertionChallenge = preformatGetAssertReq(assertionChallenge);
 
-                var resultRaw = await fetch('/api/assertion/result', {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(credentialInfo)
-                });
-                var result = await resultRaw.json();
-                if (result.status == 'ok') {
-                    document.location.href = '/';
+                    console.log(assertionChallenge);
+
+                    var credentialInfo = await navigator.credentials.get({ 'publicKey': assertionChallenge });
+                    credentialInfo = publicKeyCredentialToJSON(credentialInfo);
+
+                    console.log(credentialInfo);
+
+                    var resultRaw = await fetch('/api/assertion/result', {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        method: 'POST',
+                        body: JSON.stringify(credentialInfo)
+                    });
+                    var result = await resultRaw.json();
+                    if (result.status == 'ok') {
+                        document.location.href = '/';
+                    }
                 }
-            }
-            catch (e) {
-                addLocalMessage(e.toString());
-            }
-        });
-
+                catch (e) {
+                    addLocalMessage(e.toString());
+                }
+            });
+        }
     });
 </script>
