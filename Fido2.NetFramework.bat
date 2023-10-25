@@ -1,0 +1,1 @@
+start powershell -ExecutionPolicy RemoteSigned ./Fido2.NetFramework.ps1 
