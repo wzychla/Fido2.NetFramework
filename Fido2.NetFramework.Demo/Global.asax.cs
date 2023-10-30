@@ -15,6 +15,7 @@ using Fido2NetLib;
 using Microsoft.Extensions.Options;
 using System.Configuration;
 using System.ComponentModel;
+using System.Data.Entity;
 
 namespace Fido2.NetFramework.Demo
 {
@@ -52,6 +53,8 @@ namespace Fido2.NetFramework.Demo
 
 
             Global.ServiceLocator = host.Services;
+
+            Database.SetInitializer( new DropCreateDatabaseIfModelChanges<FidoDbContext>() );
         }
 
         IHostBuilder CreateHostBuilder()

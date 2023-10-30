@@ -55,13 +55,13 @@ namespace Fido2.NetFramework.Demo.Controllers.MVC
                     }
                     else
                     {
-                        this.ViewBag.Message = "Zła nazwa użytkownika lub hasło";
+                        this.ViewBag.Message = "Username or password incorrect";
                         return View( model );
                     }
                 }
                 else
                 {
-                    this.ViewBag.Message = "Należy prawidłowo wypełnić formularz";
+                    this.ViewBag.Message = "There were errors in the form";
                     return View( model );
                 }
             }
@@ -88,18 +88,18 @@ namespace Fido2.NetFramework.Demo.Controllers.MVC
                 if ( user == null )
                 {
                     this._demoStorage.AddUser( model.UserName, model.Password );
-                    this.TempData.Add( "message", "Konto zostało utworzone" );
+                    this.TempData.Add( "message", "Account has been created" );
                     return Redirect( "/" );
                 }
                 else
                 {
-                    this.ViewBag.Message = "Użytkownik o takiej nazwie już istnieje";
+                    this.ViewBag.Message = "User already exists";
                     return View( model );
                 }
             }
             else
             {
-                this.ViewBag.Message = "Należy prawidłowo wypełnić formularz";
+                this.ViewBag.Message = "There were errors in the form";
                 return View( model );
             }
         }
