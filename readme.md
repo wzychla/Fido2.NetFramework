@@ -13,6 +13,20 @@ This is a work in progress, I'd be grateful for all input provided by the commun
 * demo app works, attestation/assertion work at least on my phone
 * 134 unit tests passed, 3 failed, some important still commented out
 
+## Demo application
+
+The demo application (`Fido.NetFramework.Demo`) requires a database. The database is configured in the `web.config`, in the `appSettings` section
+
+```
+  <appSettings>
+    ...
+    <add key="ConnectionStrings:FidoDbContext" value="server=.\sql2019;database=webauthn;integrated security=true" />
+  </appSettings>
+```
+
+This should point to an **existing, empty** database (no tables). The Entity Framework is configured to automatically create the database schema based on the model.
+When the application is run for the first time and a first query is executed against the database, all the required tables are created
+
 ## Nuget
 
 Soon
