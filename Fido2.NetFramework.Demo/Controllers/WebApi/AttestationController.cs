@@ -59,7 +59,7 @@ namespace Fido2.NetFramework.Demo.Controllers.WebApi
                 {
                     RequireResidentKey      = true,
                     UserVerification        =  Fido2NetLib.Objects.UserVerificationRequirement.Preferred,
-                    AuthenticatorAttachment = AuthenticatorAttachment.CrossPlatform
+                    //AuthenticatorAttachment = AuthenticatorAttachment.CrossPlatform
                 };
 
                 var exts = new AuthenticationExtensionsClientInputs() { };
@@ -166,7 +166,7 @@ namespace Fido2.NetFramework.Demo.Controllers.WebApi
                     //RequireResidentKey      = true,
                     ResidentKey               = ResidentKeyRequirement.Required,
                     UserVerification          =  Fido2NetLib.Objects.UserVerificationRequirement.Required,
-                    AuthenticatorAttachment   = AuthenticatorAttachment.CrossPlatform
+                    //AuthenticatorAttachment   = AuthenticatorAttachment.CrossPlatform
                 };
 
                 var exts = new AuthenticationExtensionsClientInputs() { };
