@@ -11,7 +11,7 @@ This is a work in progress, I'd be grateful for all input provided by the commun
 ## Current status (2023-10-20)
 
 * demo app works, attestation/assertion work at least on my phone
-* 134 unit tests passed, 3 failed, some important still commented out
+* 137 unit tests passed, some still commented out
 
 ## Demo application
 
@@ -33,5 +33,6 @@ Soon
 
 ## Version history
 
+* 0.3.0 - EC signatures work
 * 0.2.0 - downgraded to .NET 4.7.2 for compatibility reasons
 * 0.1.0 - initial release
