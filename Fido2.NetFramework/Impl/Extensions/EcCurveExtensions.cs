@@ -13,14 +13,26 @@ namespace Fido2NetLib
             if ( curve.Oid.FriendlyName is "secP256k1" ) // OID = 1.3.132.0.10
                 return COSE.EllipticCurve.P256K;
 
-            if ( curve.Oid.Value.Equals( ECCurve.NamedCurves.nistP256.Oid.Value, StringComparison.Ordinal ) )
+            if ( curve.Oid.FriendlyName is "nistP256" )
                 return COSE.EllipticCurve.P256;
 
-            else if ( curve.Oid.Value.Equals( ECCurve.NamedCurves.nistP384.Oid.Value, StringComparison.Ordinal ) )
+            if ( curve.Oid.FriendlyName is "nistP384" )
                 return COSE.EllipticCurve.P384;
 
-            else if ( curve.Oid.Value.Equals( ECCurve.NamedCurves.nistP521.Oid.Value, StringComparison.Ordinal ) )
+            if ( curve.Oid.FriendlyName is "nistP521" )
                 return COSE.EllipticCurve.P521;
+
+            if ( curve.Oid.Value != null )
+            {
+                if ( curve.Oid.Value.Equals( ECCurve.NamedCurves.nistP256.Oid.Value, StringComparison.Ordinal ) )
+                    return COSE.EllipticCurve.P256;
+
+                else if ( curve.Oid.Value.Equals( ECCurve.NamedCurves.nistP384.Oid.Value, StringComparison.Ordinal ) )
+                    return COSE.EllipticCurve.P384;
+
+                else if ( curve.Oid.Value.Equals( ECCurve.NamedCurves.nistP521.Oid.Value, StringComparison.Ordinal ) )
+                    return COSE.EllipticCurve.P521;
+            }
 
             throw new Exception( $"Invalid ECCurve. Was {curve.Oid}" );
         }
