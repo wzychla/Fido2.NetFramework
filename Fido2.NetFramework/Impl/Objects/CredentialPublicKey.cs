@@ -107,11 +107,14 @@ namespace Fido2NetLib.Objects
                 throw new InvalidOperationException( $"Must be a RSA key. Was {_type}" );
             }
 
-            return RSA.Create( new RSAParameters
+            var rsa = new RSACng();
+            rsa.ImportParameters( new RSAParameters
             {
                 Modulus = (byte[])_cpk[COSE.KeyTypeParameter.N],
                 Exponent = (byte[])_cpk[COSE.KeyTypeParameter.E]
             } );
+
+            return rsa;
         }
 
         public ECDsa CreateECDsa()
@@ -185,7 +188,7 @@ namespace Fido2NetLib.Objects
             }
         }
 
-        internal AsymmetricKeyParameter EdDSAPublicKey
+        public AsymmetricKeyParameter EdDSAPublicKey
         {
             get
             {

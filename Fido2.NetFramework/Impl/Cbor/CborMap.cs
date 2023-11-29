@@ -92,32 +92,32 @@ namespace Fido2NetLib.Cbor
             _items.Add( new KeyValuePair<CborObject, CborObject>( new CborTextString( key ), new CborByteString( value ) ) );
         }
 
-        internal void Add( CborObject key, CborObject value )
+        public void Add( CborObject key, CborObject value )
         {
             _items.Add( new KeyValuePair<CborObject, CborObject>( key, value ) );
         }
 
-        internal void Add( string key, COSE.Algorithm value )
+        public void Add( string key, COSE.Algorithm value )
         {
             _items.Add( new KeyValuePair<CborObject, CborObject>( new CborTextString( key ), new CborInteger( (int)value ) ) );
         }
 
-        internal void Add( COSE.KeyCommonParameter key, COSE.KeyType value )
+        public void Add( COSE.KeyCommonParameter key, COSE.KeyType value )
         {
             _items.Add( new KeyValuePair<CborObject, CborObject>( new CborInteger( (int)key ), new CborInteger( (int)value ) ) );
         }
 
-        internal void Add( COSE.KeyCommonParameter key, COSE.Algorithm value )
+        public void Add( COSE.KeyCommonParameter key, COSE.Algorithm value )
         {
             _items.Add( new KeyValuePair<CborObject, CborObject>( new CborInteger( (int)key ), new CborInteger( (int)value ) ) );
         }
 
-        internal void Add( COSE.KeyTypeParameter key, COSE.EllipticCurve value )
+        public void Add( COSE.KeyTypeParameter key, COSE.EllipticCurve value )
         {
             _items.Add( new KeyValuePair<CborObject, CborObject>( new CborInteger( (int)key ), new CborInteger( (int)value ) ) );
         }
 
-        internal void Add( COSE.KeyTypeParameter key, byte[] value )
+        public void Add( COSE.KeyTypeParameter key, byte[] value )
         {
             _items.Add( new KeyValuePair<CborObject, CborObject>( new CborInteger( (int)key ), new CborByteString( value ) ) );
         }
@@ -217,7 +217,7 @@ namespace Fido2NetLib.Cbor
             }
         }
 
-        internal void Set( string key, CborObject value )
+        public void Set( string key, CborObject value )
         {
             for ( int i = 0; i < _items.Count; i++ )
             {

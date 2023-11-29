@@ -1,5 +1,6 @@
 ﻿using Fido2NetLib;
 using Fido2NetLib.Objects;
+using Fido2NetLib.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Security.Cryptography;
 
@@ -15,34 +16,30 @@ namespace fido2_net_lib.Test
         [DataRow( "1.3.132.0.35", COSE.Algorithm.ES512 )]  // P512
         public void CanUseECCurves( string oid, COSE.Algorithm alg )
         {
-            using ( var rng = RandomNumberGenerator.Create() )
-            {
-                byte[] signedData = new byte[64];
-                rng.GetBytes( signedData );
+            byte[] signedData = RandomNumberHelper.GetBytes( 64 );
 
-                using ( var ecDsa = ECDsa.Create( ECCurve.CreateFromValue( oid ) ) )
+            using ( var ecDsa = ECDsa.Create( ECCurve.CreateFromValue( oid ) ) )
+            {
+
+                var signature = SignatureHelper.EcDsaSigFromSig(ecDsa.SignData(signedData, CryptoUtils.HashAlgFromCOSEAlg(alg)), ecDsa.KeySize);
+
+                var credentialPublicKey = new CredentialPublicKey(ecDsa, alg);
+
+                using ( var decodedPublicKey = credentialPublicKey.CreateECDsa() )
                 {
 
-                    var signature = SignatureHelper.EcDsaSigFromSig(ecDsa.SignData(signedData, CryptoUtils.HashAlgFromCOSEAlg(alg)), ecDsa.KeySize);
+                    var decodedEcDsaParams = decodedPublicKey.ExportParameters(false);
 
-                    var credentialPublicKey = new CredentialPublicKey(ecDsa, alg);
+                    // NOTES
+                    // - the oid.value is not set for secP256k1
+                    // - macOS does not support the secP256k1 curve
 
-                    using ( var decodedPublicKey = credentialPublicKey.CreateECDsa() )
+                    if ( decodedEcDsaParams.Curve.Oid?.Value != null )
                     {
-
-                        var decodedEcDsaParams = decodedPublicKey.ExportParameters(false);
-
-                        // NOTES
-                        // - the oid.value is not set for secP256k1
-                        // - macOS does not support the secP256k1 curve
-
-                        if ( decodedEcDsaParams.Curve.Oid?.Value != null )
-                        {
-                            Assert.AreEqual( oid, decodedEcDsaParams.Curve.Oid.Value );
-                        }
-
-                        Assert.IsTrue( credentialPublicKey.Verify( signedData, signature ) );
+                        Assert.AreEqual( oid, decodedEcDsaParams.Curve.Oid.Value );
                     }
+
+                    Assert.IsTrue( credentialPublicKey.Verify( signedData, signature ) );
                 }
             }
         }

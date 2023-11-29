@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Formats.Asn1;
 
 namespace fido2_net_lib
@@ -9,6 +10,7 @@ namespace fido2_net_lib
         public static byte[] EcDsaSigFromSig( ReadOnlySpan<byte> sig, int keySizeInBits )
         {
             var coefficientSize = (int)Math.Ceiling((decimal)keySizeInBits / 8);
+
             var r = sig.Slice(0, coefficientSize);
             var s = sig.Slice(sig.Length - coefficientSize);
 
@@ -41,14 +43,15 @@ namespace fido2_net_lib
 
         public static ReadOnlySpan<T> TrimStart<T>( this ReadOnlySpan<T> span, T trimElement )
         {
-            int end = span.Length;
             int start = 0;
-            for ( ; start < end; start++ )
+
+            for ( ; start < span.Length; start++ )
             {
                 if ( !span[start].Equals( trimElement ) )
                     break;
             }
-            return span.Slice( start, end );
+
+            return span.Slice( start );
         }
     }
 }

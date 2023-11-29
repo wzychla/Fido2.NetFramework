@@ -124,6 +124,8 @@
     <Compile Include="ExistingU2fRegistrationDataTests.cs" />
     <Compile Include="Extensions\AsnHelper.cs" />
     <Compile Include="Extensions\CertInfoHelper.cs" />
+    <Compile Include="Extensions\CollectionAssertExtensions.cs" />
+    <Compile Include="Extensions\RandomNumberHelper.cs" />
     <Compile Include="Extensions\Record.cs" />
     <Compile Include="Extensions\PubAreaHelper.cs" />
     <Compile Include="Extensions\SerializationHelper.cs" />
@@ -138,39 +140,105 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="TestFiles\assertionNoneOptions.json" />
-    <None Include="TestFiles\assertionNoneResponse.json" />
-    <None Include="TestFiles\attestationAndroidKeyOptions.json" />
-    <None Include="TestFiles\attestationAndroidKeyResponse.json" />
-    <None Include="TestFiles\attestationAppleOptions.json" />
-    <None Include="TestFiles\attestationAppleResponse.json" />
-    <None Include="TestFiles\attestationNoneOptions.json" />
-    <None Include="TestFiles\attestationNoneResponse.json" />
-    <None Include="TestFiles\attestationOptionsATKey.json" />
-    <None Include="TestFiles\attestationOptionsNone.json" />
-    <None Include="TestFiles\attestationOptionsPacked.json" />
-    <None Include="TestFiles\attestationOptionsPacked512.json" />
-    <None Include="TestFiles\attestationOptionsTrustKeyT110.json" />
-    <None Include="TestFiles\attestationOptionsU2F.json" />
-    <None Include="TestFiles\attestationResultsATKey.json" />
-    <None Include="TestFiles\attestationResultsNone.json" />
-    <None Include="TestFiles\attestationResultsPacked.json" />
-    <None Include="TestFiles\attestationResultsPacked512.json" />
-    <None Include="TestFiles\attestationResultsU2F.json" />
-    <None Include="TestFiles\attestationResultTrustKeyT110.json" />
-    <None Include="TestFiles\attestationTPMSHA1Options.json" />
-    <None Include="TestFiles\attestationTPMSHA1Response.json" />
-    <None Include="TestFiles\attestationTPMSHA256Options.json" />
-    <None Include="TestFiles\attestationTPMSHA256Response.json" />
-    <None Include="TestFiles\json1.json" />
-    <None Include="TestFiles\json2.json" />
-    <None Include="TestFiles\mdsCA.cer" />
-    <None Include="TestFiles\mdsCA.crl" />
-    <None Include="TestFiles\mdsRoot.cer" />
-    <None Include="TestFiles\mdsRoot.crl" />
-    <None Include="TestFiles\mdsSigning.cer" />
-    <None Include="TestFiles\options1.json" />
-    <None Include="TestFiles\options2.json" />
+    <None Include="TestFiles\assertionNoneOptions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\assertionNoneResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationAndroidKeyOptions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationAndroidKeyResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationAppleOptions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationAppleResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationNoneOptions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationNoneResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationOptionsATKey.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationOptionsNone.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationOptionsPacked.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationOptionsPacked512.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationOptionsTrustKeyT110.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationOptionsU2F.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationResultsATKey.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationResultsNone.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationResultsPacked.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationResultsPacked512.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationResultsU2F.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationResultTrustKeyT110.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationTPMSHA1Options.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationTPMSHA1Response.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationTPMSHA256Options.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\attestationTPMSHA256Response.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\json1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\json2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\mdsCA.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\mdsCA.crl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\mdsRoot.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\mdsRoot.crl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\mdsSigning.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\options1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\options2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fido2.NetFramework\Fido2.NetFramework.csproj">

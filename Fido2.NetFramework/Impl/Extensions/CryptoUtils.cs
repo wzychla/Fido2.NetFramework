@@ -126,11 +126,14 @@ namespace Fido2NetLib
             if ( chain.Build( trustPath[0] ) )
             {
                 // if that validated, we should have a root for this chain now, add it to the custom trust store
-                chain.ChainPolicy.ExtraStore.Clear();
-                chain.ChainPolicy.ExtraStore.Add( chain.ChainElements[chain.ChainElements.Count-1].Certificate );
+                /*
+                 * skipped, no support in .NET.Framework
+                 * 
+                chain.ChainPolicy.CustomTrustStore.Clear();
+                chain.ChainPolicy.CustomTrustStore.Add( chain.ChainElements[chain.ChainElements.Count-1].Certificate );
 
                 // explicitly trust the custom root we just added
-                //chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
+                chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
 
                 // if the attestation cert has a CDP extension, go ahead and turn on online revocation checking
                 if ( !string.IsNullOrEmpty( CDPFromCertificateExts( trustPath[0].Extensions ) ) )
@@ -138,6 +141,7 @@ namespace Fido2NetLib
 
                 // don't allow unknown root now that we have a custom root
                 chain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
+                */
 
                 // now, verify chain again with all checks turned on
                 if ( chain.Build( trustPath[0] ) )

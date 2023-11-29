@@ -2,7 +2,7 @@
 using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-
+using System.Linq;
 using Fido2NetLib.Cbor;
 using Fido2NetLib.Exceptions;
 
@@ -102,35 +102,13 @@ namespace Fido2NetLib.Objects
             if ( _data != null )
                 return _data;
 
-            /*
-            var writer = new ArrayBufferWriter<byte>(512);
-
-            writer.Write( RpIdHash );
-
-            writer.Write( new byte[1] { (byte)_flags } );
-
-            writer.WriteUInt32BigEndian( SignCount );
-
-            if ( HasAttestedCredentialData && AttestedCredentialData != null )
-            {
-                AttestedCredentialData.WriteTo( writer );
-            }
-
-            if ( HasExtensionsData && Extensions != null )
-            {
-                writer.Write( Extensions.GetBytes() );
-            }
-
-            return writer.WrittenSpan.ToArray();
-            */
-
             List<byte> writer = new List<byte>();
 
             writer.AddRange( RpIdHash );
 
             writer.AddRange( new byte[1] { (byte)_flags } );
 
-            writer.AddRange( BitConverter.GetBytes( SignCount ) );
+            writer.AddRange( BitConverter.GetBytes( SignCount ).Reverse() );
 
             if ( HasAttestedCredentialData && AttestedCredentialData != null )
             {
