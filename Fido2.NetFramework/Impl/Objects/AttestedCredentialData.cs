@@ -71,6 +71,14 @@ namespace Fido2NetLib.Objects
         {
             writer.AddRange( AaGuid.ToByteArray() );
 
+            if ( BitConverter.IsLittleEndian )
+            {
+                SwapBytes( writer, 0, 3 );
+                SwapBytes( writer, 1, 2 );
+                SwapBytes( writer, 4, 5 );
+                SwapBytes( writer, 6, 7 );
+            }
+
             // Write the length of credential ID, as big endian bytes of a 16-bit unsigned integer
             writer.AddRange( BitConverter.GetBytes( (ushort)CredentialId.Length ).Reverse() );
 
@@ -79,6 +87,13 @@ namespace Fido2NetLib.Objects
 
             // Write credential public key bytes
             writer.AddRange( CredentialPublicKey.GetBytes() );
+        }
+
+        private void SwapBytes( IList<byte> writer, int i, int j )
+        {
+            var temp = writer[i];
+            writer[i] = writer[j];
+            writer[j] = temp;
         }
 
         public void WriteTo( IBufferWriter<byte> writer )

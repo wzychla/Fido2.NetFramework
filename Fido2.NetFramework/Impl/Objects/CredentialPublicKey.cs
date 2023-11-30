@@ -5,6 +5,8 @@ using System.Security.Cryptography.X509Certificates;
 using Fido2NetLib.Cbor;
 
 using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Generators;
+using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Crypto.Utilities;
 
@@ -90,7 +92,7 @@ namespace Fido2NetLib.Objects
                     }
 
                 case COSE.KeyType.OKP:
-                    //return SignatureAlgorithm.Ed25519.Verify( EdDSAPublicKey, data, signature );
+
                     var verifier = new Ed25519Signer();
                     verifier.Init( false, EdDSAPublicKey );
                     verifier.BlockUpdate( data.ToArray(), 0, data.Length );
@@ -207,8 +209,12 @@ namespace Fido2NetLib.Objects
                         {
                             //return NSec.Cryptography.PublicKey.Import( SignatureAlgorithm.Ed25519, (byte[])_cpk[COSE.KeyTypeParameter.X], KeyBlobFormat.RawPublicKey );
                             // https://stackoverflow.com/questions/66476780/sign-verify-json-using-ed25519-keys-with-bouncy-castle-java
-                            var publicKeyParameter = OpenSshPublicKeyUtilities.ParsePublicKey((byte[])_cpk[COSE.KeyTypeParameter.X]);
-                            return publicKeyParameter;
+                            //var publicKeyParameter = OpenSshPublicKeyUtilities.ParsePublicKey((byte[])_cpk[COSE.KeyTypeParameter.X]);
+                            //return publicKeyParameter;
+
+                            Ed25519PublicKeyParameters ed25519Public = new Ed25519PublicKeyParameters((byte[])_cpk[COSE.KeyTypeParameter.X]);
+
+                            return ed25519Public;
                         }
                         else
                         {

@@ -73,17 +73,17 @@ namespace fido2_net_lib.Test
 
             _validCOSEParameters = new List<(COSE.KeyType, COSE.Algorithm, COSE.EllipticCurve)>()
             {
-                //ValueTuple.Create(COSE.KeyType.EC2, COSE.Algorithm.ES256, COSE.EllipticCurve.P256),
-                //ValueTuple.Create(COSE.KeyType.EC2, COSE.Algorithm.ES384, COSE.EllipticCurve.P384),
-                //ValueTuple.Create(COSE.KeyType.EC2, COSE.Algorithm.ES512, COSE.EllipticCurve.P521),
-                //ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.RS256, noCurve),
-                //ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.RS384, noCurve),
-                //ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.RS512, noCurve),
-                //ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.PS256, noCurve),
-                //ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.PS384, noCurve),
-                //ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.PS512, noCurve),
+                ValueTuple.Create(COSE.KeyType.EC2, COSE.Algorithm.ES256, COSE.EllipticCurve.P256),
+                ValueTuple.Create(COSE.KeyType.EC2, COSE.Algorithm.ES384, COSE.EllipticCurve.P384),
+                ValueTuple.Create(COSE.KeyType.EC2, COSE.Algorithm.ES512, COSE.EllipticCurve.P521),
+                ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.RS256, noCurve),
+                ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.RS384, noCurve),
+                ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.RS512, noCurve),
+                ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.PS256, noCurve),
+                ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.PS384, noCurve),
+                ValueTuple.Create(COSE.KeyType.RSA, COSE.Algorithm.PS512, noCurve),
                 ValueTuple.Create(COSE.KeyType.OKP, COSE.Algorithm.EdDSA, COSE.EllipticCurve.Ed25519),
-                //ValueTuple.Create(COSE.KeyType.EC2, COSE.Algorithm.ES256K, COSE.EllipticCurve.P256K)
+                ValueTuple.Create(COSE.KeyType.EC2, COSE.Algorithm.ES256K, COSE.EllipticCurve.P256K)
             };
         }
 
@@ -368,10 +368,13 @@ namespace fido2_net_lib.Test
                         //Key privateKey = Key.Import(SignatureAlgorithm.Ed25519, expandedPrivateKey, KeyBlobFormat.RawPrivateKey);
                         //return SignatureAlgorithm.Ed25519.Sign( privateKey, data );
 
-                        var key = OpenSshPublicKeyUtilities.ParsePublicKey( expandedPrivateKey );
+                        //var key = OpenSshPublicKeyUtilities.ParsePublicKey( expandedPrivateKey );
+                        //var key = OpenSshPrivateKeyUtilities.ParsePrivateKeyBlob( expandedPrivateKey );
+
+                        Ed25519PrivateKeyParameters private25519 = new Ed25519PrivateKeyParameters(expandedPrivateKey);
 
                         var verifier = new Ed25519Signer();
-                        verifier.Init( false, key );
+                        verifier.Init( true, private25519 );
                         verifier.BlockUpdate( data.ToArray(), 0, data.Length );
 
                         return verifier.GenerateSignature();
@@ -974,18 +977,15 @@ namespace fido2_net_lib.Test
 
             gen.Init( param );
             AsymmetricCipherKeyPair pair = gen.GenerateKeyPair();
-            PrivateKeyInfo pkInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(pair.Private);
 
-            expandedPrivateKey = pkInfo.GetDerEncoded();
-            SubjectPublicKeyInfo info = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(pair.Public);
-            publicKey = info.GetDerEncoded();
+            Ed25519PrivateKeyParameters private25519 = (Ed25519PrivateKeyParameters)pair.Private;
+            Ed25519PublicKeyParameters public25519 = (Ed25519PublicKeyParameters)pair.Public;
 
-/*            
-            var key = Key.Create(SignatureAlgorithm.Ed25519, new KeyCreationParameters() { ExportPolicy = KeyExportPolicies.AllowPlaintextExport });
-            expandedPrivateKey = key.Export( KeyBlobFormat.RawPrivateKey );
-            
-            publicKey = key.Export( KeyBlobFormat.RawPublicKey );
-*/
+            expandedPrivateKey = new byte[32];
+            private25519.Encode( expandedPrivateKey, 0 );
+
+            publicKey = new byte[32];
+            public25519.Encode( publicKey, 0 );
         }
 
         internal static ECDsa MakeECDsa( COSE.Algorithm alg, COSE.EllipticCurve crv )
