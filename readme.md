@@ -8,10 +8,10 @@ The **fido2-net-lib** targets .NET6 which makes it unusable in .NET Framework 4.
 
 This is a work in progress, I'd be grateful for all input provided by the community.
 
-## Current status (2023-10-20)
+## Current status (2023-11-30)
 
-* demo app works, attestation/assertion work at least on my phone
-* 137 unit tests passed, some still commented out
+* demo app works, attestation/assertion work 
+* 282 unit tests pass, 1 doesn't pass as .NET.Framework doesn't support specific certificate feature
 
 ## Demo application
 
@@ -33,6 +33,7 @@ Soon
 
 ## Version history
 
+* 0.5.0 - important unit tests work
 * 0.3.0 - EC signatures work
 * 0.2.0 - downgraded to .NET 4.7.2 for compatibility reasons
 * 0.1.0 - initial release

@@ -150,13 +150,13 @@ namespace Fido2NetLib.Cbor
             return _items.GetEnumerator();
         }
 
-        internal CborObject this[COSE.KeyCommonParameter key] => GetValue( (long)key );
+        public CborObject this[COSE.KeyCommonParameter key] => GetValue( (long)key );
 
-        internal CborObject this[COSE.EllipticCurve key] => GetValue( (long)key );
+        public CborObject this[COSE.EllipticCurve key] => GetValue( (long)key );
 
-        internal CborObject this[COSE.KeyType key] => GetValue( (long)key );
+        public CborObject this[COSE.KeyType key] => GetValue( (long)key );
 
-        internal CborObject this[COSE.KeyTypeParameter key] => GetValue( (long)key );
+        public CborObject this[COSE.KeyTypeParameter key] => GetValue( (long)key );
 
         public CborObject GetValue( long key )
         {
@@ -204,7 +204,7 @@ namespace Fido2NetLib.Cbor
             }
         }
 
-        internal void Remove( string key )
+        public void Remove( string key )
         {
             for ( int i = 0; i < _items.Count; i++ )
             {

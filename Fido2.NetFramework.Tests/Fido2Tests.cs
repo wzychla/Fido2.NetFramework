@@ -87,9 +87,9 @@ namespace fido2_net_lib.Test
             };
         }
 
-        private async Task<T> GetAsync<T>( string filename )
+        private Task<T> GetAsync<T>( string filename )
         {
-            return JsonConvert.DeserializeObject<T>( File.ReadAllText( filename ) );
+            return Task.FromResult( JsonConvert.DeserializeObject<T>( File.ReadAllText( filename ) ) );
         }
 
         public abstract class Attestation
@@ -261,13 +261,15 @@ namespace fido2_net_lib.Test
                         }
                     case COSE.KeyType.RSA:
                         {
-                            rsa = RSA.Create();
+                            rsa = new RSACng();
                             break;
                         }
                     case COSE.KeyType.OKP:
                         {
                             MakeEdDSA( out var privateKeySeed, out publicKey, out byte[] expandedPrivateKey );
-                            privateKey = OpenSshPublicKeyUtilities.ParsePublicKey( expandedPrivateKey );
+
+                            privateKey = new Ed25519PrivateKeyParameters(expandedPrivateKey);
+
                             break;
                         }
                     default:
@@ -318,12 +320,10 @@ namespace fido2_net_lib.Test
                             _credentialPublicKey = MakeCredentialPublicKey( kty, alg, COSE.EllipticCurve.Ed25519, publicKey );
 
                             var verifier = new Ed25519Signer();
-                            verifier.Init( false, _credentialPublicKey.EdDSAPublicKey );
+                            verifier.Init( true, expandedPrivateKey );
                             verifier.BlockUpdate( _attToBeSigned.ToArray(), 0, _attToBeSigned.Length );
 
                             return verifier.GenerateSignature();
-
-                            //return SignatureAlgorithm.Ed25519.Sign( expandedPrivateKey, _attToBeSigned );
                         }
 
                     default:
@@ -365,7 +365,7 @@ namespace fido2_net_lib.Test
                     }
                 case COSE.KeyType.OKP:
                     {
-                        Ed25519PrivateKeyParameters private25519 = new Ed25519PrivateKeyParameters(expandedPrivateKey);
+                        var private25519 = new Ed25519PrivateKeyParameters(expandedPrivateKey);
 
                         var verifier = new Ed25519Signer();
                         verifier.Init( true, private25519 );
