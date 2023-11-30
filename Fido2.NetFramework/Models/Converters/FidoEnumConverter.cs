@@ -12,6 +12,11 @@ namespace Fido2NetLib
         {
             string text = reader.Value as string;
 
+            if ( string.IsNullOrWhiteSpace( text ) )
+            {
+                return (T)Enum.ToObject( typeof(T), 0 );
+            }
+
             if ( EnumNameMapper<T>.TryGetValue( text, out T value ) )
             {
                 return value;

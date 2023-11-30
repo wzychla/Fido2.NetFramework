@@ -365,12 +365,6 @@ namespace fido2_net_lib.Test
                     }
                 case COSE.KeyType.OKP:
                     {
-                        //Key privateKey = Key.Import(SignatureAlgorithm.Ed25519, expandedPrivateKey, KeyBlobFormat.RawPrivateKey);
-                        //return SignatureAlgorithm.Ed25519.Sign( privateKey, data );
-
-                        //var key = OpenSshPublicKeyUtilities.ParsePublicKey( expandedPrivateKey );
-                        //var key = OpenSshPrivateKeyUtilities.ParsePrivateKeyBlob( expandedPrivateKey );
-
                         Ed25519PrivateKeyParameters private25519 = new Ed25519PrivateKeyParameters(expandedPrivateKey);
 
                         var verifier = new Ed25519Signer();
@@ -580,7 +574,7 @@ namespace fido2_net_lib.Test
             var authData = o.AttestationObject.AuthData;
             var acdBytes = authData.AttestedCredentialData.ToByteArray();
             var acd = AttestedCredentialData.Parse(acdBytes);
-            Assert.AreEqual( acd.ToByteArray(), acdBytes );
+            CollectionAssert.AreEqual( acd.ToByteArray(), acdBytes );
         }
 
         [TestMethod]
@@ -640,7 +634,7 @@ namespace fido2_net_lib.Test
             var authData = o.AttestationObject.AuthData;
             var acdBytes = authData.AttestedCredentialData.ToByteArray();
             var acd = AttestedCredentialData.Parse(acdBytes);
-            Assert.AreEqual( acd.ToByteArray(), acdBytes );
+            CollectionAssert.AreEqual( acd.ToByteArray(), acdBytes );
         }
 
         [TestMethod]
@@ -653,7 +647,7 @@ namespace fido2_net_lib.Test
             var authData = o.AttestationObject.AuthData;
             var acdBytes = authData.AttestedCredentialData.ToByteArray();
             var acd = AttestedCredentialData.Parse(acdBytes);
-            Assert.AreEqual( acd.ToByteArray(), acdBytes );
+            CollectionAssert.AreEqual( acd.ToByteArray(), acdBytes );
         }
 
         [TestMethod]
@@ -817,11 +811,11 @@ namespace fido2_net_lib.Test
             var exts = new Extensions(extBytes);
 
             var ad = new AuthenticatorData(rpIdHash, flags, signCount, acd, exts);
-            Assert.AreEqual( rpIdHash, ad.RpIdHash );
+            CollectionAssert.AreEqual( rpIdHash, ad.RpIdHash );
             Assert.IsTrue( ad.HasAttestedCredentialData | ad.UserPresent | ad.UserVerified | ad.HasExtensionsData );
             Assert.AreEqual( signCount, ad.SignCount );
-            Assert.AreEqual( ad.AttestedCredentialData.ToByteArray(), acd.ToByteArray() );
-            Assert.AreEqual( extBytes, ad.Extensions.GetBytes() );
+            CollectionAssert.AreEqual( ad.AttestedCredentialData.ToByteArray(), acd.ToByteArray() );
+            CollectionAssert.AreEqual( extBytes, ad.Extensions.GetBytes() );
         }
 
         [TestMethod]

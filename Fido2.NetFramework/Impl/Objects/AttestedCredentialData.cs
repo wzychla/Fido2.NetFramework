@@ -69,14 +69,16 @@ namespace Fido2NetLib.Objects
 
         public void WriteTo( List<byte> writer )
         {
+            var currentIndex = writer.Count;
+
             writer.AddRange( AaGuid.ToByteArray() );
 
             if ( BitConverter.IsLittleEndian )
             {
-                SwapBytes( writer, 0, 3 );
-                SwapBytes( writer, 1, 2 );
-                SwapBytes( writer, 4, 5 );
-                SwapBytes( writer, 6, 7 );
+                SwapBytes( writer, currentIndex + 0, currentIndex + 3 );
+                SwapBytes( writer, currentIndex + 1, currentIndex + 2 );
+                SwapBytes( writer, currentIndex + 4, currentIndex + 5 );
+                SwapBytes( writer, currentIndex + 6, currentIndex + 7 );
             }
 
             // Write the length of credential ID, as big endian bytes of a 16-bit unsigned integer
