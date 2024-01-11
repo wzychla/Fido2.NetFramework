@@ -29,7 +29,7 @@ When the application is run for the first time and a first query is executed aga
 
 ## Nuget
 
-Soon
+[Fido2.NetFramework](https://www.nuget.org/packages/Fido2.NetFramework/)
 
 ## Version history
 

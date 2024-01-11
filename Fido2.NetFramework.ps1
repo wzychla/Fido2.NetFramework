@@ -21,7 +21,7 @@ $contents = @"
     <version>__VERSION</version>
     <authors>wzychla</authors>
 	<dependencies>
-		<group targetFramework="net462">
+		<group targetFramework="net472">
 			<dependency id="BouncyCastle.Cryptography" version="2.2.1" />
 			<dependency id="Newtonsoft.Json" version="13.0.3" />			
 			<dependency id="System.Formats.Asn1" version="7.0.0" />			
@@ -34,11 +34,13 @@ $contents = @"
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
 	<license type="expression">MIT</license>
     <description>Fido2.NetFramework. Net.Framework port of fido2-net-lib.</description>
-    <copyright>Copyright 2023 Wiktor Zychla</copyright>
+    <copyright>Copyright 2023-2024 Wiktor Zychla</copyright>
+	<icon>images\icon.png</icon>
     <tags>fido2</tags>
   </metadata>
   <files>
 	<file src="lib/net472/Fido2.NetFramework.dll" target="lib/net472/Fido2.NetFramework.dll" />  
+	<file src="..\..\..\icon.png" target="images\" />	
   </files>
 </package>
 "@
