@@ -203,7 +203,7 @@
 //    {
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("ver", new CborInteger(1));
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("Invalid version in SafetyNet data", ex.Result.Message);
 //    }
 
@@ -212,7 +212,7 @@
 //    {
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("ver", CborNull.Instance);
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("Invalid version in SafetyNet data", ex.Result.Message);
 //    }
 
@@ -221,7 +221,7 @@
 //    {
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("ver", new CborTextString(""));
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("Invalid version in SafetyNet data", ex.Result.Message);
 //    }
 
@@ -230,7 +230,7 @@
 //    {
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("response", CborNull.Instance);
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("Invalid response in SafetyNet data", ex.Result.Message);
 //    }
 
@@ -239,7 +239,7 @@
 //    {
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("response", new CborTextString("telephone"));
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("Invalid response in SafetyNet data", ex.Result.Message);
 //    }
 
@@ -248,7 +248,7 @@
 //    {
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("response", new CborByteString(new byte[] { }));
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("Invalid response in SafetyNet data", ex.Result.Message);
 //    }
 
@@ -257,7 +257,7 @@
 //    {
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("response", new CborByteString(" "u8.ToArray()));
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual(Fido2ErrorMessages.MalformedSafetyNetJwt, ex.Result.Message);
 //    }
 
@@ -272,7 +272,7 @@
 
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("response", new CborByteString(Encoding.UTF8.GetBytes(text)));
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual(Fido2ErrorMessages.MalformedSafetyNetJwt, ex.Result.Message);
 //    }
 
@@ -287,7 +287,7 @@
 //        response = Encoding.UTF8.GetBytes(string.Join(".", jwtParts));
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("response", new CborByteString(response));
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("SafetyNet response JWT header missing x5c", ex.Result.Message);
 //    }
 
@@ -303,7 +303,7 @@
 //        response = Encoding.UTF8.GetBytes(string.Join(".", jwtParts));
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("response", new CborByteString(response));
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("No keys were present in the TOC header in SafetyNet response JWT", ex.Result.Message);
 //    }
 
@@ -319,7 +319,7 @@
 //        response = Encoding.UTF8.GetBytes(string.Join(".", jwtParts));
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("response", new CborByteString(response));
-//        var ex = Assert.ThrowsExceptionAnyAsync<Exception>(async () => await MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAnyAsync<Exception>(async () => await MakeAttestationResponseAsync());
 //        Assert.AreEqual("Could not parse X509 certificate", ex.Result.Message);
 //    }
 
@@ -348,7 +348,7 @@
 //        response = Encoding.UTF8.GetBytes(string.Join(".", jwtParts));
 //        var attStmt = (CborMap)_attestationObject["attStmt"];
 //        attStmt.Set("response", new CborByteString(response));
-//        var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.StartsWith("SafetyNet response security token validation failed", ex.Message);
 //    }
 
@@ -431,7 +431,7 @@
 //                });
 //            }
 //        }
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.StartsWith("SafetyNet timestampMs must be between one minute ago and now, got:", ex.Result.Message);
 //    }
 
@@ -510,7 +510,7 @@
 //                });
 //            }
 //        }
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.StartsWith("SafetyNet timestampMs must be between one minute ago and now, got:", ex.Result.Message);
 //    }
 
@@ -589,7 +589,7 @@
 //                });
 //            }
 //        }
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("SafetyNet timestampMs not found SafetyNet attestation", ex.Result.Message);
 //    }
 
@@ -668,7 +668,7 @@
 //                });
 //            }
 //        }
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("Nonce value not found in SafetyNet attestation", ex.Result.Message);
 //    }
 
@@ -755,7 +755,7 @@
 //                });
 //            }
 //        }
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.StartsWith("SafetyNet response nonce / hash value mismatch", ex.Result.Message);
 //    }
 
@@ -840,7 +840,7 @@
 //                });
 //            }
 //        }
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("Nonce value not base64string in SafetyNet attestation", ex.Result.Message);
 //    }
 
@@ -922,7 +922,7 @@
 //                });
 //            }
 //        }
-//        var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
 //        Assert.AreEqual(Fido2ErrorCode.InvalidAttestation, ex.Code);
 //        Assert.StartsWith("Invalid SafetyNet attestation cert DnsName", ex.Message);
@@ -1009,7 +1009,7 @@
 //                });
 //            }
 //        }
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("SafetyNet response ctsProfileMatch missing", ex.Result.Message);
 //    }
 
@@ -1088,7 +1088,7 @@
 //                 });
 //            }
 //        }
-//        var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+//        var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 //        Assert.AreEqual("SafetyNet response ctsProfileMatch false", ex.Result.Message);
 //    }
 //}

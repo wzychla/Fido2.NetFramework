@@ -71,18 +71,18 @@ else
                     credentialChallenge = preformatMakeCredReq(credentialChallenge);
 
                     var credentialInfo = await navigator.credentials.create({ 'publicKey': credentialChallenge });
+                    var transports     = credentialInfo.response.getTransports ? credentialInfo.response.getTransports() : [];
 
                     /*
-                    var response = credentialInfo.response;
                     var authenticatorData = response.getAuthenticatorData();
                     var pk = response.getPublicKey();
                     var pkAlgo = response.getPublicKeyAlgorithm();
-                    var transports = response.getTransports();
     
                     console.log(authenticatorData, pk, pkAlgo, transports);
                     */
 
                     credentialInfo = publicKeyCredentialToJSON(credentialInfo);
+                    credentialInfo.transports = transports;
                     console.log(credentialInfo);
 
                     var resultRaw = await fetch('/api/attestation/result', {

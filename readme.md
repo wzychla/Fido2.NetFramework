@@ -33,6 +33,7 @@ When the application is run for the first time and a first query is executed aga
 
 ## Version history
 
+* 0.6.0, 2026-04-16 - AuthenticatorTransport updated to contain Hybrid. Passkey transports are thus stored in the database.
 * 0.5.0 - important unit tests work
 * 0.3.0 - EC signatures work
 * 0.2.0 - downgraded to .NET 4.7.2 for compatibility reasons

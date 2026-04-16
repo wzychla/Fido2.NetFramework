@@ -32,8 +32,9 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyFileVersion("0.5.0.0")]
+[assembly: AssemblyFileVersion("0.6.0.0")]
 
+// 0.6.0 - AuthenticatorTransport updated. transport is stored in the db.
 // 0.3.0 - EC signatures work
 // 0.2.0 - downgraded to .NET 4.7.2 for compatibility reasons
 // 0.1.0 - initial release

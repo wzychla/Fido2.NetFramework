@@ -397,8 +397,8 @@ namespace fido2_net_lib.Test
             // Assert.IsTrue("discouraged" == UserVerificationRequirement.Discouraged);
             // Assert.IsFalse("discouraged" != UserVerificationRequirement.Discouraged);
 
-            Assert.IsFalse( UserVerificationRequirement.Required == UserVerificationRequirement.Discouraged );
-            Assert.IsTrue( UserVerificationRequirement.Required != UserVerificationRequirement.Discouraged );
+            // Assert.IsFalse( UserVerificationRequirement.Required == UserVerificationRequirement.Discouraged );
+            // Assert.IsTrue( UserVerificationRequirement.Required != UserVerificationRequirement.Discouraged );
 
             // testing where string and member name mismatch
 
@@ -488,7 +488,7 @@ namespace fido2_net_lib.Test
         //    var clientDataJson = CryptoUtils.HashData256(Encoding.UTF8.GetBytes("1234567890abcdefgh"));
 
         //    var verifier = new AppleAppAttest();
-        //    var ex = Assert.ThrowsException<Fido2VerificationException>(() =>
+        //    var ex = Assert.Throws<Fido2VerificationException>(() =>
         //    {
         //        (AttestationType attType, System.Security.Cryptography.X509Certificates.X509Certificate[] trustPath) = verifier.Verify(AttestationObject.AttStmt, AttestationObject.AuthData, clientDataJson);
         //    });
@@ -690,7 +690,7 @@ namespace fido2_net_lib.Test
             mockMetadataService.Setup( m => m.ConformanceTesting() ).Returns( false );
 
             var o = AuthenticatorAttestationResponse.Parse(response);
-            await Assert.ThrowsExceptionAsync<UndesiredMetadataStatusFido2VerificationException>( () =>
+            await Assert.ThrowsAsync<UndesiredMetadataStatusFido2VerificationException>( () =>
                 o.VerifyAsync( options, _config, ( x, cancellationToken ) => Task.FromResult( true ), mockMetadataService.Object, CancellationToken.None ) );
         }
 

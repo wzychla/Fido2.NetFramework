@@ -12,6 +12,7 @@ using System.Web.Security;
 using Microsoft.Extensions.DependencyInjection;
 using static Fido2NetLib.Fido2;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Fido2.NetFramework.Demo.Controllers.WebApi
 {
@@ -87,7 +88,9 @@ namespace Fido2.NetFramework.Demo.Controllers.WebApi
         [Authorize]
         [HttpPost]
         [Route( "api/attestation/result" )]
-        public async Task<IHttpActionResult> Attestation_Result( [FromBody] AuthenticatorAttestationRawResponse attestationResponse )
+        public async Task<IHttpActionResult> Attestation_Result( 
+            [FromBody] AuthenticatorAttestationRawResponseWithTransports attestationResponse 
+            )
         {
             try
             {
@@ -122,7 +125,8 @@ namespace Fido2.NetFramework.Demo.Controllers.WebApi
                         //Descriptor = new PublicKeyCredentialDescriptor( success.Result.CredentialId ),
                         DescriptorId = success.Result.Id,
                         PublicKey  = success.Result.PublicKey,
-                        RegDate    = DateTime.Now                        
+                        RegDate    = DateTime.Now,
+                        Transports = attestationResponse.Transports != null ? string.Join(",", attestationResponse.Transports) : null
                         /*
                         Id = success.Result.Id,
                         Descriptor = new PublicKeyCredentialDescriptor( success.Result.Id ),
@@ -264,5 +268,11 @@ namespace Fido2.NetFramework.Demo.Controllers.WebApi
 
         #endregion
 
+    }
+
+    public class AuthenticatorAttestationRawResponseWithTransports : AuthenticatorAttestationRawResponse
+    {
+        [JsonProperty( "transports" )]
+        public AuthenticatorTransport[] Transports { get; set; }
     }
 }

@@ -90,7 +90,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "sig", CborNull.Instance );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( "Invalid android-key attestation signature", ex.Message );
@@ -100,7 +100,7 @@ namespace Test.Attestation
         public async Task TestAndroidKeyAttStmtEmpty()
         {
             _attestationObject.Set( "attStmt", new CborMap { } );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( "Attestation format android-key must have attestation statement", ex.Message );
@@ -111,7 +111,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "sig", new CborTextString( "walrus" ) );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( "Invalid android-key attestation signature", ex.Message );
@@ -122,7 +122,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "sig", new CborByteString( Array.Empty<byte>() ) );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( "Invalid android-key attestation signature", ex.Message );
@@ -133,7 +133,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "x5c", CborNull.Instance );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( Fido2ErrorMessages.MalformedX5c_AndroidKeyAttestation, ex.Message );
@@ -143,7 +143,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "x5c", new CborTextString( "boomerang" ) );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( Fido2ErrorMessages.MalformedX5c_AndroidKeyAttestation, ex.Message );
@@ -154,7 +154,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "x5c", new CborTextString( "x" ) );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( Fido2ErrorMessages.MalformedX5c_AndroidKeyAttestation, ex.Message );
@@ -165,7 +165,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "x5c", new CborArray { Array.Empty<byte>() } );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( Fido2ErrorMessages.MalformedX5c_AndroidKeyAttestation, ex.Message );
@@ -179,7 +179,7 @@ namespace Test.Attestation
             var X5c = new CborArray { attestnCert };
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "x5c", X5c );
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.IsTrue( ex.Result.Message.StartsWith( "Failed to extract public key from android key: " ) );
         }
 
@@ -188,7 +188,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Remove( "alg" );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( "Invalid android-key attestation algorithm", ex.Message );
@@ -199,7 +199,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "alg", CborNull.Instance );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( "Invalid android-key attestation algorithm", ex.Message );
@@ -210,7 +210,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "alg", new CborTextString( "invalid alg" ) );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( "Invalid android-key attestation algorithm", ex.Message );
@@ -221,7 +221,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "alg", new CborInteger( -1 ) );
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Unrecognized COSE algorithm value", ex.Result.Message );
         }
 
@@ -230,7 +230,7 @@ namespace Test.Attestation
         {
             var attStmt = (CborMap)_attestationObject["attStmt"];
             attStmt.Set( "sig", new CborByteString( new byte[] { 0xf1, 0xd0 } ) );
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Failed to decode android key attestation signature from ASN.1 encoded form", ex.Result.Message );
 
             var innerException = (AsnContentException)ex.Result.InnerException;
@@ -244,7 +244,7 @@ namespace Test.Attestation
             var sig = (byte[])attStmt["sig"];
             sig[sig.Length-1] ^= 0xff;
             attStmt.Set( "sig", new CborByteString( sig ) );
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( Fido2ErrorMessages.InvalidAndroidKeyAttestationSignature, ex.Message );
         }
 
@@ -270,7 +270,7 @@ namespace Test.Attestation
                 } );
                 }
             }
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Android key attestation certificate contains no AttestationRecord extension", ex.Result.Message );
         }
 
@@ -298,7 +298,7 @@ namespace Test.Attestation
                 } );
                 }
             }
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Malformed android key AttestationRecord extension verifying android key attestation certificate extension", ex.Result.Message );
         }
 
@@ -350,7 +350,7 @@ namespace Test.Attestation
                 } );
                 }
             }
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Found all applications field in android key attestation certificate extension", ex.Result.Message );
         }
 
@@ -402,7 +402,7 @@ namespace Test.Attestation
                 } );
                 }
             }
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Found all applications field in android key attestation certificate extension", ex.Result.Message );
         }
 
@@ -454,7 +454,7 @@ namespace Test.Attestation
                 } );
                 }
             }
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Found origin field not set to KM_ORIGIN_GENERATED in android key attestation certificate extension", ex.Result.Message );
         }
 
@@ -506,7 +506,7 @@ namespace Test.Attestation
                 } );
                 }
             }
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Found origin field not set to KM_ORIGIN_GENERATED in android key attestation certificate extension", ex.Result.Message );
         }
 
@@ -561,7 +561,7 @@ namespace Test.Attestation
                 } );
                 }
             }
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Found purpose field not set to KM_PURPOSE_SIGN in android key attestation certificate extension", ex.Result.Message );
         }
 
@@ -616,7 +616,7 @@ namespace Test.Attestation
                 } );
                 }
             }
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
             Assert.AreEqual( "Found purpose field not set to KM_PURPOSE_SIGN in android key attestation certificate extension", ex.Result.Message );
         }
     }

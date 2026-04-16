@@ -72,5 +72,6 @@ namespace Fido2.NetFramework.Demo
         public string CredType { get; set; }
         public DateTime RegDate { get; set; }
         public Guid AaGuid { get; set; }
+        public string Transports { get; set; }
     }
 }

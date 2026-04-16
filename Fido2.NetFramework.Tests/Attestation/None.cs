@@ -51,7 +51,7 @@ namespace Test.Attestation
             _attestationObject.Add( "attStmt", new CborMap { { "foo", "bar" } } );
             _credentialPublicKey = Fido2Tests.MakeCredentialPublicKey( Fido2Tests._validCOSEParameters[0] );
 
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => MakeAttestationResponseAsync());
 
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestation, ex.Code );
             Assert.AreEqual( "Attestation format none should have no attestation statement", ex.Message );

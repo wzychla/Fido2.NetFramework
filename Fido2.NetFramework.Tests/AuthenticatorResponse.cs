@@ -240,7 +240,7 @@ namespace Test
                 Origins = new HashSet<string> { expectedOrigin },
             });
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.IsTrue( ex.Result.Message.StartsWith( "Fully qualified origin" ) );
         }
 
@@ -311,7 +311,7 @@ namespace Test
         [TestMethod]
         public void TestAuthenticatorAttestationRawResponseNull()
         {
-            var ex = Assert.ThrowsException<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(null));
+            var ex = Assert.Throws<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(null));
 
             Assert.AreEqual( "Expected rawResponse, got null", ex.Message );
         }
@@ -327,7 +327,7 @@ namespace Test
                 Response = null
             };
 
-            var ex = Assert.ThrowsException<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(rawResponse));
+            var ex = Assert.Throws<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(rawResponse));
             Assert.AreEqual( "Expected rawResponse, got null", ex.Message );
         }
 
@@ -343,7 +343,7 @@ namespace Test
                     AttestationObject = value,
                 }
             };
-            var ex = Assert.ThrowsException<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(rawResponse));
+            var ex = Assert.Throws<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(rawResponse));
             Assert.AreEqual( "Missing AttestationObject", ex.Message );
         }
 
@@ -359,7 +359,7 @@ namespace Test
                 }
             };
 
-            var ex = Assert.ThrowsException<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(rawResponse));
+            var ex = Assert.Throws<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(rawResponse));
             Assert.AreEqual( Fido2ErrorMessages.InvalidAttestationObject, ex.Message );
             Assert.AreEqual( Fido2ErrorCode.InvalidAttestationObject, ex.Code );
 
@@ -385,7 +385,7 @@ namespace Test
                 }
             };
 
-            var ex = Assert.ThrowsException<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(rawResponse));
+            var ex = Assert.Throws<Fido2VerificationException>(() => AuthenticatorAttestationResponse.Parse(rawResponse));
 
             Assert.AreEqual( Fido2ErrorCode.MalformedAttestationObject, ex.Code );
             Assert.AreEqual( Fido2ErrorMessages.MalformedAttestationObject, ex.Message );
@@ -461,7 +461,7 @@ namespace Test
                 Origins = new HashSet<string> { rp },
             });
 
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( Fido2ErrorMessages.AttestationResponseTypeNotWebAuthnGet, ex.Message );
         }
 
@@ -537,7 +537,7 @@ namespace Test
                 Origins = new HashSet<string> { rp },
             });
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( Fido2ErrorMessages.AttestationResponseIdMissing, ex.Result.Message );
         }
 
@@ -611,7 +611,7 @@ namespace Test
                 Origins = new HashSet<string> { rp },
             });
 
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( "AttestationResponse type must be 'public-key'", ex.Message );
         }
 
@@ -692,7 +692,7 @@ namespace Test
                 Origins = new HashSet<string> { rp },
             });
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( Fido2ErrorCode.InvalidRpidHash, ex.Result.Code );
             Assert.AreEqual( Fido2ErrorMessages.InvalidRpidHash, ex.Result.Message );
         }
@@ -775,7 +775,7 @@ namespace Test
                 Origins = new HashSet<string> { rp },
             });
 
-            var ex = await Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = await Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
 
             Assert.AreEqual( Fido2ErrorCode.UserPresentFlagNotSet, ex.Code );
             Assert.AreEqual( Fido2ErrorMessages.UserPresentFlagNotSet, ex.Message );
@@ -859,7 +859,7 @@ namespace Test
                 BackupEligibleCredentialPolicy = Fido2Configuration.CredentialBackupPolicy.Required,
             });
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( Fido2ErrorMessages.BackupEligibilityRequirementNotMet, ex.Result.Message );
         }
 
@@ -941,7 +941,7 @@ namespace Test
                 BackupEligibleCredentialPolicy = Fido2Configuration.CredentialBackupPolicy.Disallowed,
             });
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( Fido2ErrorMessages.BackupEligibilityRequirementNotMet, ex.Result.Message );
         }
 
@@ -1022,7 +1022,7 @@ namespace Test
                 Origins = new HashSet<string> { rp },
             });
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( "Attestation flag not set on attestation data", ex.Result.Message );
         }
 
@@ -1104,7 +1104,7 @@ namespace Test
                 Origins = new HashSet<string> { rp },
             });
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( "Unknown attestation type. Was 'testing'", ex.Result.Message );
             Assert.AreEqual( Fido2ErrorCode.UnknownAttestationType, ex.Result.Code );
         }
@@ -1186,7 +1186,7 @@ namespace Test
                 Origins = new HashSet<string> { rp },
             });
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( "CredentialId is not unique to this user", ex.Result.Message );
         }
 
@@ -1267,7 +1267,7 @@ namespace Test
                 Origins = new HashSet<string> { rp },
             });
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeNewCredentialAsync(rawResponse, origChallenge, callback));
             Assert.AreEqual( "User Verified flag not set in authenticator data and user verification was required", ex.Result.Message );
         }
 
@@ -1411,7 +1411,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.AssertionResponseNotPublicKey, ex.Result.Message );
         }
 
@@ -1484,7 +1484,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.AssertionResponseIdMissing, ex.Result.Message );
         }
 
@@ -1558,7 +1558,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.AssertionResponseRawIdMissing, ex.Result.Message );
         }
 
@@ -1632,7 +1632,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.UserHandleIsEmpty, ex.Result.Message );
         }
 
@@ -1706,7 +1706,7 @@ namespace Test
             return Task.FromResult(false);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.UserHandleNotOwnerOfPublicKey, ex.Result.Message );
         }
 
@@ -1780,7 +1780,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.AssertionResponseTypeNotWebAuthnGet, ex.Result.Message );
         }
 
@@ -1856,7 +1856,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.InvalidRpidHash, ex.Result.Message );
         }
 
@@ -1931,7 +1931,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.InvalidRpidHash, ex.Result.Message );
         }
 
@@ -2006,7 +2006,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.UserPresentFlagNotSet, ex.Result.Message );
         }
 
@@ -2081,7 +2081,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.UserVerificationRequirementNotMet, ex.Result.Message );
         }
 
@@ -2155,7 +2155,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.BackupEligibilityRequirementNotMet, ex.Result.Message );
         }
 
@@ -2229,7 +2229,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.BackupEligibilityRequirementNotMet, ex.Result.Message );
         }
 
@@ -2303,7 +2303,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.BackupStateRequirementNotMet, ex.Result.Message );
         }
 
@@ -2377,7 +2377,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.BackupStateRequirementNotMet, ex.Result.Message );
         }
 
@@ -2451,7 +2451,7 @@ namespace Test
             return Task.FromResult(true);
         };
 
-            var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
+            var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, null, null, 0, callback));
             Assert.AreEqual( Fido2ErrorMessages.MissingStoredPublicKey, ex.Result.Message );
         }
 
@@ -2526,7 +2526,7 @@ namespace Test
         //    };
 
         //    fido2_net_lib.Test.Fido2Tests.MakeEdDSA( out _, out var publicKey, out var privateKey );
-        //    var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, fido2_net_lib.Test.Fido2Tests.MakeCredentialPublicKey(COSE.KeyType.OKP, COSE.Algorithm.EdDSA, COSE.EllipticCurve.Ed25519, publicKey).GetBytes(), null, 0, callback));
+        //    var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, fido2_net_lib.Test.Fido2Tests.MakeCredentialPublicKey(COSE.KeyType.OKP, COSE.Algorithm.EdDSA, COSE.EllipticCurve.Ed25519, publicKey).GetBytes(), null, 0, callback));
         //    Assert.AreEqual( Fido2ErrorMessages.InvalidSignature, ex.Result.Message );
         //}
 
@@ -2606,7 +2606,7 @@ namespace Test
         //        return Task.FromResult(true);
         //    };
 
-        //    var ex = Assert.ThrowsExceptionAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, cpk.GetBytes(), null, 2, callback));
+        //    var ex = Assert.ThrowsAsync<Fido2VerificationException>(() => lib.MakeAssertionAsync(assertionResponse, options, cpk.GetBytes(), null, 2, callback));
         //    Assert.AreEqual( Fido2ErrorMessages.SignCountIsLessThanSignatureCounter, ex.Result.Message );
         //}
     }

@@ -5,7 +5,7 @@ using Fido2NetLib.Objects;
 namespace Fido2NetLib
 {
 
-    public sealed class AuthenticatorAttestationRawResponse
+    public class AuthenticatorAttestationRawResponse
     {
         [JsonConverter( typeof( Base64UrlConverter ) )]
         [JsonProperty( "id" )]
